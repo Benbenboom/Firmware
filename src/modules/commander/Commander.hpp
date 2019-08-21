@@ -140,7 +140,6 @@ private:
 		(ParamFloat<px4::params::COM_OF_LOSS_T>) _param_com_of_loss_t,
 		(ParamInt<px4::params::COM_OBL_ACT>) _param_com_obl_act,
 		(ParamInt<px4::params::COM_OBL_RC_ACT>) _param_com_obl_rc_act
-
 	)
 
 	const int64_t POSVEL_PROBATION_MIN = 1_s;	/**< minimum probation duration (usec) */

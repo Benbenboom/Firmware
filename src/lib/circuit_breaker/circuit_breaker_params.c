@@ -194,3 +194,17 @@ PARAM_DEFINE_INT32(CBRK_USB_CHK, 0);
  * @group Circuit Breaker
  */
 PARAM_DEFINE_INT32(CBRK_VELPOSERR, 0);
+
+/**
+ * Circuit breaker to skip the intermediate prearmed state between the disarmed and armed states
+ *
+ * Setting this parameter to 293017 will ensure that all outputs stay in disarmed position until armed.
+ * Use together with CBRK_IO_SAFETY to prevent all actuator movement when the safety switch is disabled.
+ *
+ * @reboot_required true
+ * @min 0
+ * @max 293017
+ * @category Developer
+ * @group Circuit Breaker
+ */
+PARAM_DEFINE_INT32(CBRK_SKIP_PREARM, 0);

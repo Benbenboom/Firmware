@@ -58,6 +58,7 @@
 #define CBRK_GPSFAIL_KEY	240024
 #define CBRK_USB_CHK_KEY	197848
 #define CBRK_VELPOSERR_KEY	201607
+#define CBRK_SKIP_PREARM_KEY	293017
 
 #include <stdint.h>
 

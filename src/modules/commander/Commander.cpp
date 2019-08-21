@@ -2310,18 +2310,24 @@ Commander::run()
 			status.timestamp = hrt_absolute_time();
 			_status_pub.publish(status);
 
-			/* set prearmed state if safety is off, or safety is not present and 5 seconds passed */
-			if (safety.safety_switch_available) {
-
-				/* safety is off, go into prearmed */
-				armed.prearmed = safety.safety_off;
+			if (status_flags.circuit_breaker_engaged_skip_prearm) {
+				/* skip prearmed state  */
+				armed.prearmed = false;
 
 			} else {
-				/* safety is not present, go into prearmed
-				 * (all output drivers should be started / unlocked last in the boot process
-				 * when the rest of the system is fully initialized)
-				 */
-				armed.prearmed = (hrt_elapsed_time(&commander_boot_timestamp) > 5_s);
+				/* set prearmed state if safety is off, or safety is not present and 5 seconds passed */
+				if (safety.safety_switch_available) {
+
+					/* safety is off, go into prearmed */
+					armed.prearmed = safety.safety_off;
+
+				} else {
+					/* safety is not present, go into prearmed
+					* (all output drivers should be started / unlocked last in the boot process
+					* when the rest of the system is fully initialized)
+					*/
+					armed.prearmed = (hrt_elapsed_time(&commander_boot_timestamp) > 5_s);
+				}
 			}
 
 			armed.timestamp = hrt_absolute_time();
@@ -2441,6 +2447,8 @@ get_circuit_breaker_params()
 	status_flags.circuit_breaker_flight_termination_disabled = circuit_breaker_enabled("CBRK_FLIGHTTERM",
 			CBRK_FLIGHTTERM_KEY);
 	status_flags.circuit_breaker_engaged_posfailure_check = circuit_breaker_enabled("CBRK_VELPOSERR", CBRK_VELPOSERR_KEY);
+	status_flags.circuit_breaker_engaged_skip_prearm = circuit_breaker_enabled("CBRK_SKIP_PREARM",
+			CBRK_SKIP_PREARM_KEY);
 }
 
 void
